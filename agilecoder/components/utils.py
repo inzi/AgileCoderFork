@@ -200,7 +200,7 @@ def _build_reverse_adjacency_list(adj_list):
     return reverse_adj_list
 
 def find_ancestors(adj_list, start_nodes):
-    if adj_list is None: return []
+    if adj_list is None: return start_nodes
     reverse_adj_list = _build_reverse_adjacency_list(adj_list)
     ancestors = set()
     for start_node in start_nodes:

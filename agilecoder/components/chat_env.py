@@ -161,6 +161,7 @@ class ChatEnv:
                 runnable_files = []
                 is_python = False
                 program_files = []
+                _testing_commands = []
                 for file, code in self.codes.codebooks.items():
                     # print('FILE:', file, code)
                     if not file.endswith('.py'): continue
@@ -169,13 +170,15 @@ class ChatEnv:
                         runnable_files.append(file)
                         if not (file.startswith('test') or file.split('.')[0].endswith('test')):
                             program_files.append(file)
+                    if (file.startswith('test') or file.split('.')[0].endswith('test')):
+                        _testing_commands.append(file)
                 return_flag = False
                 original_program_files_len = len(program_files)
                 log_and_print_online('runnable_files: ' + str(runnable_files))
                 if 'testing_commands' not in self.env_dict:
                     chat_env.count_graph_call()
                     testing_commands = self.env_dict['commands']
-                    _testing_commands = list(filter(lambda x: x.startswith('test') or x.split('.')[0].endswith('test'), get_test_order(chat_env.dependency_graph, chat_env.testing_file_map)))
+                    # _testing_commands = list(filter(lambda x: x.startswith('test') or x.split('.')[0].endswith('test'), get_test_order(chat_env.dependency_graph, chat_env.testing_file_map)))
                     _testing_commands = list(map(lambda x: 'python ' + x, _testing_commands))
                     
                     additional_commands = list(set(testing_commands) - set(_testing_commands))
@@ -480,7 +483,7 @@ class ChatEnv:
 
     def rewrite_codes(self) -> None:
         self.codes._rewrite_codes(self.config.git_management)
-        self.dependency_graph = build_dependency_graph(self.env_dict['directory'])
+        self.dependency_graph = None#build_dependency_graph(self.env_dict['directory'])
         # print('self.dependency_graph', self.dependency_graph)
     def get_high_overlap_code(self):
         return self.codes._get_high_overlap_code()

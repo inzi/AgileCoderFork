@@ -2468,7 +2468,7 @@ class TestModification(Phase):
             all_relevant_code = chat_env.get_changed_codes(file_names)
             # print('all_relevant_code', all_relevant_code)
         else:
-            if chat_env.dependency_graph  is not None:
+            if chat_env.dependency_graph is not None:
                 chat_env.count_graph_call()
                 if test_reports == 'The software run successfully without errors.':
                     file_names = get_non_leaf_and_intermediate_files(chat_env.dependency_graph)
